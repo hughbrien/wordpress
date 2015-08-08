@@ -31,6 +31,10 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52
 RUN sudo apt-get update
 RUN sudo apt-get install datadog-agent
 
+#Custom Code to include Key code 
+RUN sudo sh -c "sed 's/api_key:.*/api_key: 55f5cd3bfc0fd6a0710c7423da543e10/' /etc/dd-agent/datadog.conf.example > /etc/dd-agent/datadog.conf"
+
+RUN /etc/init.d/datadog-agent start
 
 EXPOSE 80 3306
 CMD ["/run.sh"]
