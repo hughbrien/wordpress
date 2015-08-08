@@ -6,9 +6,10 @@ RUN apt-get update && \
   apt-get -y install php5-gd && \
   rm -rf /var/lib/apt/lists/*
 
-# Patch for install curl
 RUN apt-get -qq update
+
 RUN apt-get -qq -y install curl 
+
 
 # Download latest version of Wordpress into /app
 RUN rm -fr /app && git clone --depth=1 https://github.com/WordPress/WordPress.git /app
@@ -24,8 +25,11 @@ ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD create_db.sh /create_db.sh
 RUN chmod +x /*.sh
 
-Install Agent
-RUN DD_API_KEY=55f5cd3bfc0fd6a0710c7423da543e10 bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
+
+RUN sh -c "echo 'deb http://apt.datadoghq.com/ stable main' > /etc/apt/sources.list.d/datadog.list"
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52
+RUN sudo apt-get update
+RUN sudo apt-get install datadog-agent
 
 
 EXPOSE 80 3306
