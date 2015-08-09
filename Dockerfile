@@ -10,6 +10,7 @@ RUN apt-get -qq update
 
 RUN apt-get -qq -y install curl 
 
+RUN apt-get -qq -y install git
 
 # Download latest version of Wordpress into /app
 RUN rm -fr /app && git clone --depth=1 https://github.com/WordPress/WordPress.git /app
